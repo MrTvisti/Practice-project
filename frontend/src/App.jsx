@@ -102,11 +102,36 @@ function App() {
     setEditingTask(null);
   };
 
+  const handleExport = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/tasks/export`, {
+        responseType: 'blob'
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'tasks_export.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Ошибка при экспорте:', error);
+    }
+  };
+
   return (
     <div className={`app ${darkMode ? 'dark' : 'light'}`}>
       <header className="app-header">
         <h1>AI Task Manager</h1>
         <div className="header-controls">
+          <button
+            onClick={handleExport}
+            className="btn-export"
+            title="Выгрузить задачи в CSV"
+          >
+            Выгрузить задачи
+          </button>
           <button
             onClick={toggleViewMode}
             className="btn-view-toggle"
