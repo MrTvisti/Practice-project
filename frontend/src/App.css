@@ -345,7 +345,7 @@ body {
   background: var(--gradient-success);
 }
 .task-card.status-done {
-  opacity: 0.8;
+  opacity: 0.5;
 }
 .task-card:hover {
   transform: translateY(-3px);

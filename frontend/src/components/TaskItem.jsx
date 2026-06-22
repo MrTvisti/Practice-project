@@ -28,30 +28,36 @@ function TaskItem({ task, onUpdateStatus, onDeleteTask, onEditTask }) {
     });
   };
 
-  const handleTitleClick = (e) => {
-    e.stopPropagation();
-    if (onEditTask) onEditTask(task);
+  const handleCardClick = (e) => {
+    // Не открывать модалку, если клик по кнопке или select
+    if (e.target.closest('.btn-delete') || e.target.closest('.status-select')) {
+      return;
+    }
+    if (onEditTask) {
+      onEditTask(task);
+    }
   };
 
   return (
-    <div className={`task-card status-${task.status}`}>
+    <div className={`task-card status-${task.status}`} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="task-header">
-        <h3 className="task-title" onClick={handleTitleClick} style={{ cursor: 'pointer' }}>
-          {task.title}
-        </h3>
+        <h3 className="task-title">{task.title}</h3>
         <button
-          onClick={() => onDeleteTask(task.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteTask(task.id);
+          }}
           className="btn-delete"
           title="Удалить задачу"
         >
           Удалить
         </button>
       </div>
-
+      
       {task.description && (
         <p className="task-description">{task.description}</p>
       )}
-
+      
       <div className="task-footer">
         <div className="task-meta">
           <span className={`status-badge ${getStatusClass(task.status)}`}>
@@ -61,10 +67,14 @@ function TaskItem({ task, onUpdateStatus, onDeleteTask, onEditTask }) {
             {formatDate(task.created_at)}
           </span>
         </div>
-
+        
         <select
           value={task.status}
-          onChange={(e) => onUpdateStatus(task.id, e.target.value)}
+          onChange={(e) => {
+            e.stopPropagation();
+            onUpdateStatus(task.id, e.target.value);
+          }}
+          onClick={(e) => e.stopPropagation()}
           className="status-select"
         >
           <option value="new">Новая</option>

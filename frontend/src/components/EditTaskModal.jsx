@@ -47,6 +47,7 @@ function EditTaskModal({ task, onSave, onDelete, onClose }) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="form-input"
+              autoFocus
             />
           </div>
 
