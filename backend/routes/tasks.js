@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getAllTasks,
   createTask,
-  updateTaskStatus,
+  updateTask,
   deleteTask,
   exportTasks
 } = require('../controllers/tasksController');
@@ -14,8 +14,8 @@ router.get('/', getAllTasks);
 // POST /tasks - создать задачу
 router.post('/', createTask);
 
-// PUT /tasks/:id - обновить статус задачи
-router.put('/:id', updateTaskStatus);
+// PUT /tasks/:id - обновить задачу
+router.put('/:id', updateTask);
 
 // DELETE /tasks/:id - удалить задачу
 router.delete('/:id', deleteTask);
