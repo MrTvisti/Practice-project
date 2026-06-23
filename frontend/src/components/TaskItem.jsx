@@ -29,7 +29,6 @@ function TaskItem({ task, onUpdateStatus, onDeleteTask, onEditTask }) {
   };
 
   const handleCardClick = (e) => {
-    // Не открывать модалку, если клик по кнопке или select
     if (e.target.closest('.btn-delete') || e.target.closest('.status-select')) {
       return;
     }

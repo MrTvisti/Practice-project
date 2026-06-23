@@ -1,5 +1,5 @@
 const pool = require('../db');
-// Получить все задачи
+
 const getAllTasks = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM tasks ORDER BY created_at DESC');
@@ -8,7 +8,7 @@ const getAllTasks = async (req, res) => {
     res.status(500).json({ error: 'Ошибка при получении задач' });
   }
 };
-// Создать новую задачу
+
 const createTask = async (req, res) => {
   const { title, description } = req.body;
   
@@ -26,7 +26,6 @@ const createTask = async (req, res) => {
     res.status(500).json({ error: 'Ошибка при создании задачи' });
   }
 };
-// Обновить статус задачи
 const updateTaskStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -50,20 +49,20 @@ const updateTaskStatus = async (req, res) => {
     res.status(500).json({ error: 'Ошибка при обновлении задачи' });
   }
 };
-// Обновить задачу полностью
+
 const updateTask = async (req, res) => {
   const { id } = req.params;
   const { title, description, status } = req.body;
   
   try {
-    // Сначала получаем текущую задачу
+
     const currentTask = await pool.query('SELECT * FROM tasks WHERE id = $1', [id]);
     
     if (currentTask.rows.length === 0) {
       return res.status(404).json({ error: 'Задача не найдена' });
     }
     
-    // Используем существующие значения, если новые не предоставлены
+
     const updatedTitle = title !== undefined ? title : currentTask.rows[0].title;
     const updatedDescription = description !== undefined ? description : currentTask.rows[0].description;
     const updatedStatus = status !== undefined ? status : currentTask.rows[0].status;
@@ -82,7 +81,7 @@ const updateTask = async (req, res) => {
     res.status(500).json({ error: 'Ошибка при обновлении задачи' });
   }
 };
-// Удалить задачу
+
 const deleteTask = async (req, res) => {
   const { id } = req.params;
   try {
@@ -96,13 +95,13 @@ const deleteTask = async (req, res) => {
     res.status(500).json({ error: 'Ошибка при удалении задачи' });
   }
 };
-// Экспорт задач в CSV
+
 const exportTasks = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM tasks ORDER BY created_at DESC');
     const tasks = result.rows;
     
-    // Формирование CSV-данных
+
     const csvRows = [];
     csvRows.push('ID,Название,Описание,Статус,Дата создания');
     
@@ -117,13 +116,13 @@ const exportTasks = async (req, res) => {
     
     const csvContent = csvRows.join('\n');
     
-    // Добавляем BOM (Byte Order Mark) для UTF-8
+
     const BOM = '\uFEFF';
     const csvWithBOM = BOM + csvContent;
     
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename=tasks_export.csv');
-    res.send(csvWithBOM);  // ← Отправляем с BOM
+    res.send(csvWithBOM); 
     
   } catch (error) {
     console.error('Ошибка при экспорте:', error);

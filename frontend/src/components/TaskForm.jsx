@@ -8,16 +8,13 @@ function TaskForm({ onCreateTask }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Проверка: поле названия обязательно
     if (!title.trim()) {
       setError('Поле "Название задачи" обязательно для заполнения');
       return;
     }
     
-    // Если всё ок, создаём задачу
     onCreateTask(title, description);
     
-    // Очищаем форму
     setTitle('');
     setDescription('');
     setError('');
@@ -32,7 +29,7 @@ function TaskForm({ onCreateTask }) {
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
-              if (error) setError(''); // Очищаем ошибку при вводе
+              if (error) setError('');
             }}
             placeholder="Название задачи..."
             className="form-input"

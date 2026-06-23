@@ -3,7 +3,7 @@ import axios from 'axios';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import BoardView from './components/BoardView';
-import EditTaskModal from './components/EditTaskModal';  // ← Добавьте импорт
+import EditTaskModal from './components/EditTaskModal';
 import ThemeToggle from './components/ThemeToggle';
 import './App.css';
 
@@ -19,7 +19,7 @@ function App() {
     const saved = localStorage.getItem('viewMode');
     return saved || 'list';
   });
-  const [editingTask, setEditingTask] = useState(null);  // ← Добавьте состояние
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     fetchTasks();
@@ -59,7 +59,6 @@ function App() {
     }
   };
 
-  // ← Добавьте функцию обновления задачи
   const updateTask = async (id, updates) => {
     try {
       const response = await axios.put(`${API_URL}/tasks/${id}`, updates);
@@ -88,7 +87,6 @@ function App() {
     setViewMode(viewMode === 'list' ? 'board' : 'list');
   };
 
-  // ← Добавьте функции для модалки
   const openEditModal = (task) => {
     setEditingTask(task);
   };
@@ -151,7 +149,7 @@ function App() {
               tasks={tasks}
               onUpdateStatus={updateStatus}
               onDeleteTask={deleteTask}
-              onEditTask={openEditModal}  // ← Добавьте пропс
+              onEditTask={openEditModal} 
             />
           </>
         ) : (
@@ -160,12 +158,11 @@ function App() {
             onCreateTask={createTask}
             onUpdateStatus={updateStatus}
             onDeleteTask={deleteTask}
-            onEditTask={openEditModal}  // ← Добавьте пропс
+            onEditTask={openEditModal}
           />
         )}
       </main>
 
-      {/* ← Добавьте модалку */}
       {editingTask && (
         <EditTaskModal
           task={editingTask}
